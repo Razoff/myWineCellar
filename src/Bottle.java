@@ -45,4 +45,9 @@ public class Bottle {
     public String getComment() {
         return comment;
     }
+
+    public String dataification(){
+        return Integer.toString(year) + " | " + color + " | " + name + " | " + appelation + " | " +
+                Double.toString(price) + " | " + Integer.toString(quantity) + " | " + comment ;
+    }
 }

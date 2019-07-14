@@ -10,7 +10,7 @@ public class Cellar {
     private final String first_line = "Year | Color | Name | Appelation | Price | Quantity | Comment";
 
     private FileWriter cellarWriter;
-    private BufferedWriter cellerBuffWriter;
+    private BufferedWriter cellarBuffWriter;
 
     private FileReader cellarReader;
     private BufferedReader cellarBuffReader;
@@ -27,11 +27,11 @@ public class Cellar {
                 cellarBuffReader = new BufferedReader(cellarReader);
 
                 cellarWriter = new FileWriter(path_cellar_db.toString());
-                cellerBuffWriter = new BufferedWriter(cellarWriter);
+                cellarBuffWriter = new BufferedWriter(cellarWriter);
 
-                cellerBuffWriter.write(first_line);
-                cellerBuffWriter.newLine();
-                cellerBuffWriter.flush();
+                cellarBuffWriter.write(first_line);
+                cellarBuffWriter.newLine();
+                cellarBuffWriter.flush();
 
             } catch (Exception e) {
                 System.out.println(e);
@@ -42,11 +42,32 @@ public class Cellar {
                 cellarReader = new FileReader(path_cellar_db.toString());
                 cellarBuffReader = new BufferedReader(cellarReader);
 
-                cellarWriter = new FileWriter(path_cellar_db.toString());
-                cellerBuffWriter = new BufferedWriter(cellarWriter);
+                cellarWriter = new FileWriter(path_cellar_db.toString(), true);
+                cellarBuffWriter = new BufferedWriter(cellarWriter);
             }catch (Exception e) {
                 System.out.println(e);
             }
         }
     }
+
+    public void addBottle(Bottle bottle){
+        addLine(bottle.dataification());
+    }
+
+    private Boolean addLine(String line){
+        try {
+            cellarBuffWriter.write(line);
+            cellarBuffWriter.newLine();
+            cellarBuffWriter.flush();
+            return true;
+        }catch (IOException e){
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    private Boolean dlLine(){
+        return false;
+    }
+
 }
