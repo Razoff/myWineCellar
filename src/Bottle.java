@@ -18,6 +18,20 @@ public class Bottle {
         this.comment = comment;
     }
 
+    public Bottle(String from_db){ // Fromat of this string is "year | name | ... "
+        String[] elems = from_db.replace("\n", "").split(" \\| ");
+
+        if (elems.length != 7){throw new IllegalArgumentException("Bad string bottle format");}
+
+        this.year = new Integer(elems[0]);
+        this.color = elems[1];
+        this.name = elems[2];
+        this.appelation = elems[3];
+        this.price = new Double(elems[4]);
+        this.quantity = new Integer(elems[5]);
+        this.comment = elems[6];
+    }
+
     public int getYear() {
         return year;
     }
@@ -46,8 +60,16 @@ public class Bottle {
         return comment;
     }
 
-    public String dataification(){
+    public String toString(){ // Eventually will be renamed to string
         return Integer.toString(year) + " | " + color + " | " + name + " | " + appelation + " | " +
                 Double.toString(price) + " | " + Integer.toString(quantity) + " | " + comment ;
+    }
+
+    public Object[] arrayification(){
+        return new Object[] {year, color, name, appelation, price, quantity, comment};
+    }
+
+    public static String[] getHeaders(){
+        return new String[] {"Year", "Color", "Name", "Appellation", "Price", "Quantity" , "Comment"};
     }
 }

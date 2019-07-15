@@ -7,9 +7,11 @@ import java.util.List;
 
 public class Cellar {
 
+    private List<Bottle> bottles;
+
     private final Path path_cellar_dir = Paths.get("./cellar");
     private final Path path_cellar_db = Paths.get("./cellar/mycellar");
-    private final String first_line = "Year | Color | Name | Appelation | Price | Quantity | Comment";
+    private final Path path_cellar_db_bak = Paths.get("./cellar/mycellar.bak");
 
     private FileWriter cellarWriter;
     private BufferedWriter cellarBuffWriter;
@@ -19,71 +21,77 @@ public class Cellar {
 
     public Cellar(){
 
+        bottles = new ArrayList<Bottle>();
+
         if(!path_cellar_db.toFile().exists()) {
             try {
                 System.out.println("No cellar detected initialisation");
                 Files.createDirectories(path_cellar_dir);
                 path_cellar_db.toFile().createNewFile();
-
-                cellarWriter = new FileWriter(path_cellar_db.toString());
-                cellarBuffWriter = new BufferedWriter(cellarWriter);
-                cellarBuffWriter.write(first_line);
-                cellarBuffWriter.newLine();
-                cellarBuffWriter.close();
-
             } catch (Exception e) {
+                System.out.println("Error while creating cellar");
+                System.out.println(e);
+            }
+        }else{
+            try{
+                System.out.println("Cellar detected initialisation");
+                cellarReader = new FileReader(path_cellar_db.toString());
+                cellarBuffReader = new BufferedReader(cellarReader);
+                while (cellarBuffReader.ready()) {
+                    bottles.add(new Bottle(cellarBuffReader.readLine()));
+                }
+                cellarBuffReader.close();
+
+
+            }catch (Exception e){
+                System.out.println("Error while loading cellar");
                 System.out.println(e);
             }
         }
     }
 
     public void addBottle(Bottle bottle){
-        addLine(bottle.dataification());
+        bottles.add(bottle);
     }
 
-    public String getHeader(){
-        return first_line;
+    public void delBottle(Bottle bottle){
+        bottles.remove(bottle);
     }
 
-    public List<String> bottles(){
-        List<String> ret = new ArrayList<String>();
+    public void modifyBottle(Bottle curr, Bottle newval){
+        bottles.remove(curr);
+        bottles.add(newval);
+    }
+
+    public String toString(){
+        String ret = "";
+        for(Bottle bottle : bottles){ ret += bottle.toString() + " \n";}
+        return ret;
+    }
+
+
+    protected Boolean backup(){
+        File bak = path_cellar_db_bak.toFile();
+        File curr = path_cellar_db.toFile();
+
+        bak.delete(); // Delete old backup
+        curr.renameTo(bak); // Create new one
 
         try {
-            cellarReader = new FileReader(path_cellar_db.toString());
-            cellarBuffReader = new BufferedReader(cellarReader);
-            while (cellarBuffReader.ready()) {
-                ret.add(cellarBuffReader.readLine());
-            }
-            cellarBuffReader.close();
-
-            ret.remove(0);
-
-            return ret;
-
-        }catch(Exception e){
-            System.out.println(e);
-        }
-
-        return null;
-
-    }
-
-    private Boolean addLine(String line){
-        try {
-            cellarWriter = new FileWriter(path_cellar_db.toString(), true);
+            curr.createNewFile();
+            cellarWriter = new FileWriter(path_cellar_db.toString());
             cellarBuffWriter = new BufferedWriter(cellarWriter);
-            cellarBuffWriter.write(line);
-            cellarBuffWriter.newLine();
+            cellarBuffWriter.write(toString());
             cellarBuffWriter.close();
             return true;
-        }catch (IOException e){
+
+        }catch (Exception e){
+            System.out.println("Error during backup");
             System.out.println(e);
+            curr.delete();
+            bak.renameTo(curr); // Put old backup in place
             return false;
         }
-    }
-
-    private Boolean dlLine(){
-        return false;
     }
 
 }
