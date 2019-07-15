@@ -69,6 +69,14 @@ public class Cellar {
         return ret;
     }
 
+    public Object[][] arrayification(){
+        Object[][] ret = new Object[bottles.size()][Bottle.getHeaders().length];
+        for(int i = 0; i < bottles.size(); i++){
+            ret[i] = bottles.get(i).arrayification();
+        }
+        return ret;
+    }
+
 
     protected Boolean backup(){
         File bak = path_cellar_db_bak.toFile();
