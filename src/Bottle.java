@@ -18,6 +18,18 @@ public class Bottle {
         this.comment = comment;
     }
 
+    public Bottle(Object[] elems){
+        if(elems.length != 7){throw new IllegalArgumentException("Badd Object[] format");}
+
+        this.year = new Integer(elems[0].toString());
+        this.color = elems[1].toString();
+        this.name = elems[2].toString();
+        this.appelation = elems[3].toString();
+        this.price = new Double(elems[4].toString());
+        this.quantity = new Integer(elems[5].toString());
+        this.comment = elems[6].toString();
+    }
+
     public Bottle(String from_db){ // Fromat of this string is "year | name | ... "
         String[] elems = from_db.replace("\n", "").split(" \\| ");
 

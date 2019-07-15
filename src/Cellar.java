@@ -50,6 +50,15 @@ public class Cellar {
         }
     }
 
+    public Cellar(Object[][] elems){
+        bottles = new ArrayList<Bottle>();
+
+        for(int i = 0; i < elems.length; i++){
+            bottles.add(new Bottle(elems[i]));
+        }
+
+    }
+
     public void addBottle(Bottle bottle){
         bottles.add(bottle);
     }
