@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -11,12 +13,12 @@ public class Main {
 
         //System.out.println(cellar);
 
-        cellar.backup();
+        //System.out.println(Arrays.deepToString(cellar.arrayification()));
 
         //cellar.addBottle(new Bottle(1993, "red", "Chateau Arnaud", "Rioja", 12.50, 11, "A boire avant 2025"));
-        //ListDisplayer disp = new ListDisplayer(cellar);
+        ListDisplayer disp = new ListDisplayer(cellar);
 
-        //disp.display();
+        disp.display();
 
     }
 }
