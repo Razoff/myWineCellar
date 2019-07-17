@@ -25,7 +25,7 @@ public class ListDisplayer {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        //table.getTableHeader().setDefaultRenderer();
+        table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 
         frame.getContentPane().add(scrollPane);
 
