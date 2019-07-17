@@ -74,6 +74,8 @@ public class ListDisplayer {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Add");
+                AddBottleForm addBottle = new AddBottleForm();
+                addBottle.display();
             }
         });
 
@@ -84,10 +86,12 @@ public class ListDisplayer {
             }
         });
 
-        savButton.addActionListener(new ActionListener() { // TODO save content
+        savButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Save");
+                update_bottles(table);
+                backup();
             }
         });
 
@@ -98,10 +102,16 @@ public class ListDisplayer {
             }
         });
 
-        quiButton.addActionListener(new ActionListener() { // TODO backup and quit
+        quiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Quit");
+                update_bottles(table);
+                if (backup()) {
+                    System.exit(0);
+                }else{
+                    System.exit(1);
+                }
             }
         });
 
