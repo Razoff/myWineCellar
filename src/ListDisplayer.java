@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.TableModel;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,22 @@ public class ListDisplayer {
 
         table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 
+        JPanel btns = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
+
+        JButton addButton = new JButton("Add"); // Add bottle to Jtable
+        JButton rmvButton = new JButton("Remove"); // Remove bottle to jtable
+        JButton savButton = new JButton("Save"); // Backup cellar into mycellar file
+        JButton relButton = new JButton("Reload"); // Load current content of cellar into Jtable
+        JButton quiButton = new JButton("Quit"); // Quit the GUI
+
+        btns.add(addButton);
+        btns.add(rmvButton);
+        btns.add(savButton);
+        btns.add(relButton);
+        btns.add(quiButton);
+
         frame.getContentPane().add(scrollPane);
+        frame.getContentPane().add(btns, BorderLayout.SOUTH);
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -48,7 +64,44 @@ public class ListDisplayer {
                     System.out.println("CTRL + S");
                     update_bottles(table);
                     backup();
+                }else if (evt.getKeyCode() == KeyEvent.VK_DELETE){
+                    System.out.println("Delete"); // TODO Delete currently selected row
                 }
+            }
+        });
+
+        addButton.addActionListener(new ActionListener() { // TODO pop form and put it in table
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Add");
+            }
+        });
+
+        rmvButton.addActionListener(new ActionListener() { // TODO remove current line
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Delete");
+            }
+        });
+
+        savButton.addActionListener(new ActionListener() { // TODO save content
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Save");
+            }
+        });
+
+        relButton.addActionListener(new ActionListener() { // TODO reload content of cellar into Jtable
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Reload");
+            }
+        });
+
+        quiButton.addActionListener(new ActionListener() { // TODO backup and quit
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Quit");
             }
         });
 
