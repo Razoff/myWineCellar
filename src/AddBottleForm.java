@@ -14,7 +14,7 @@ public class AddBottleForm {
         JComboBox<Integer> years = new JComboBox<Integer>(years_tmp.toArray(new Integer[years_tmp.size()]));
 
         // Color field
-        JComboBox<String> colors = new JComboBox<String>(new String[]{"Red", "Pink", "White", "Yellow", "Blue", "Purple"});
+        JComboBox<String> colors = new JComboBox<String>(new String[]{"Red wine", "Rosé wine", "White wine", "Late harvest", "Champagne", "Hard liquor", "Special", "Black"});
 
         // Name field
         JTextField name = new JTextField();
@@ -59,7 +59,7 @@ public class AddBottleForm {
         if (result == JOptionPane.OK_OPTION) {
             System.out.println("New bottle");
             try {
-                return new Bottle((int) years.getSelectedItem(), colors.getSelectedItem().toString(), name.getText(),
+                return new Bottle((int) years.getSelectedItem(), ColorConverter.wineTypeToColor(colors.getSelectedItem().toString()), name.getText(),
                         appelation.getText(), new Double(price.getText()), (int) quantity.getSelectedItem(), comment.getText());
             }catch (Exception e){
                 System.out.println("Error bottle format");
