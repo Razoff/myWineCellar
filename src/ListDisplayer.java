@@ -22,16 +22,22 @@ public class ListDisplayer {
 
     public void display() {
 
+        // Create basic frame
         final JFrame frame = new JFrame("My cellar GUI");
         frame.setSize(1000, 1000);
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // See listener later for closing actions
 
-        //JTable table = new JTable(cellar_bottles, headers);
+        // Create table
         JTable table = new JTable();
+
+        // Set up model AKA put data into table
         DefaultTableModel model = new DefaultTableModel(cellar_bottles, headers);
         table.setModel(model);
+
+        // Special renderer to see colors in column 1
         table.getColumnModel().getColumn(1).setCellRenderer(new ColorCellRenderer());
 
+        // Setup default spacing
         table.getColumnModel().getColumn(0).setPreferredWidth(20);
         table.getColumnModel().getColumn(1).setPreferredWidth(20);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -41,29 +47,36 @@ public class ListDisplayer {
         table.getColumnModel().getColumn(6).setPreferredWidth(300);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
+        // Add scrolling
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        // Special renderer for header
         table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 
+        // Panel for the buttons
         JPanel btns = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
 
+        // Buttons creation
         JButton addButton = new JButton("Add"); // Add bottle to Jtable
         JButton rmvButton = new JButton("Remove"); // Remove bottle to jtable
         JButton savButton = new JButton("Save"); // Backup cellar into mycellar file
         JButton relButton = new JButton("Reload"); // Load current content of cellar into Jtable
         JButton quiButton = new JButton("Quit"); // Quit the GUI
 
+        // Add buttons to panel
         btns.add(addButton);
         btns.add(rmvButton);
         btns.add(savButton);
         btns.add(relButton);
         btns.add(quiButton);
 
+        // Add elements to panel
         frame.getContentPane().add(scrollPane);
         frame.getContentPane().add(btns, BorderLayout.SOUTH);
 
+        // What we do when we exit
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
@@ -76,6 +89,7 @@ public class ListDisplayer {
             }
         });
 
+        // Handle CTRL S, D and DEL key
         table.addKeyListener(new java.awt.event.KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent evt) {
@@ -95,6 +109,7 @@ public class ListDisplayer {
             }
         });
 
+        // Keep last selected row
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
@@ -103,6 +118,7 @@ public class ListDisplayer {
             }
         });
 
+        // When someone edit a celle show user that it need to be savec
         table.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent focusEvent) {
@@ -114,6 +130,7 @@ public class ListDisplayer {
             }
         });
 
+        // Add button behaviour
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -123,6 +140,7 @@ public class ListDisplayer {
             }
         });
 
+        // Remove button behaviour
         rmvButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -132,6 +150,7 @@ public class ListDisplayer {
             }
         });
 
+        // Save button behaviour
         savButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -142,6 +161,7 @@ public class ListDisplayer {
             }
         });
 
+        // Reload button behaviour
         relButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -152,6 +172,7 @@ public class ListDisplayer {
             }
         });
 
+        // Quit button behaviour
         quiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -165,10 +186,12 @@ public class ListDisplayer {
             }
         });
 
+        // Set everything visible
         frame.setVisible(true);
 
     }
 
+    // Method that deletes the last selected row
     private void delete_row(JTable table){
         if (lastSelectedRow != -1) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -179,6 +202,7 @@ public class ListDisplayer {
 
     }
 
+    // Add bottle to table
     private void add_row(JTable table, Bottle bottle){
         if(bottle != null) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -187,6 +211,7 @@ public class ListDisplayer {
         }
     }
 
+    // Update this.cellar_bottles with the current content of the jtable (last step before writing to cellar file)
     private void update_bottles(JTable table){
         TableModel dtm = table.getModel();
         int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
@@ -199,6 +224,7 @@ public class ListDisplayer {
         this.cellar_bottles = tableData;
     }
 
+    // Write back to file
     private Boolean backup(){
         return new Cellar(cellar_bottles).backup();
     }
