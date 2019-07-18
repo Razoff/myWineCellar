@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,10 +11,12 @@ import java.util.List;
 public class ListDisplayer {
     private String[] headers;
     private Object[][] cellar_bottles;
+    private int lastSelectedRow;
 
     public ListDisplayer(Cellar cellar) {
         this.headers = Bottle.getHeaders();
         this.cellar_bottles = cellar.arrayification();
+        this.lastSelectedRow = -1;
     }
 
     public void display() {
@@ -21,7 +26,10 @@ public class ListDisplayer {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        JTable table = new JTable(cellar_bottles, headers);
+        //JTable table = new JTable(cellar_bottles, headers);
+        JTable table = new JTable();
+        DefaultTableModel model = new DefaultTableModel(cellar_bottles, headers);
+        table.setModel(model);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -64,25 +72,37 @@ public class ListDisplayer {
                     System.out.println("CTRL + S");
                     update_bottles(table);
                     backup();
+                    savButton.setText("Save");
                 }else if (evt.getKeyCode() == KeyEvent.VK_DELETE){
-                    System.out.println("Delete"); // TODO Delete currently selected row
+                    delete_row(table);
+                    System.out.println("Delete");
                 }
             }
         });
 
-        addButton.addActionListener(new ActionListener() { // TODO pop form and put it in table
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("Add");
-                AddBottleForm addBottle = new AddBottleForm();
-                addBottle.display();
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                lastSelectedRow = table.getSelectedRow();
+                System.out.println(lastSelectedRow);
             }
         });
 
-        rmvButton.addActionListener(new ActionListener() { // TODO remove current line
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Add");
+                add_row(table, new AddBottleForm().display());
+                savButton.setText("Save*");
+            }
+        });
+
+        rmvButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Delete");
+                delete_row(table);
+                savButton.setText("Save*");
             }
         });
 
@@ -91,14 +111,18 @@ public class ListDisplayer {
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Save");
                 update_bottles(table);
+                savButton.setText("Save");
                 backup();
             }
         });
 
-        relButton.addActionListener(new ActionListener() { // TODO reload content of cellar into Jtable
+        relButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Reload");
+                DefaultTableModel model = new DefaultTableModel(cellar_bottles, headers);
+                table.setModel(model);
+                savButton.setText("Save");
             }
         });
 
@@ -115,6 +139,22 @@ public class ListDisplayer {
             }
         });
 
+    }
+
+    private void delete_row(JTable table){
+        if (lastSelectedRow != -1) {
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.removeRow(lastSelectedRow);
+        }else{
+            System.out.println("No rows selected");
+        }
+
+    }
+
+    private void add_row(JTable table, Bottle bottle){
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.addRow(bottle.arrayification());
+        table.setModel(model);
     }
 
     private void update_bottles(JTable table){

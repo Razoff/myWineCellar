@@ -4,7 +4,7 @@ import java.util.Calendar;
 import javax.swing.*;
 
 public class AddBottleForm {
-    public static void display() {
+    public static Bottle display() {
 
         // Year field
         ArrayList<Integer> years_tmp = new ArrayList<Integer>();
@@ -17,47 +17,57 @@ public class AddBottleForm {
         JComboBox<String> colors = new JComboBox<String>(new String[]{"Red", "Pink", "White", "Yellow", "Blue", "Purple"});
 
         // Name field
+        JTextField name = new JTextField();
 
         // Appelation field
+        JTextField appelation = new JTextField();
 
         // Price field
+        JTextField price = new JTextField();
 
         // Quantity field
+        ArrayList<Integer> quantity_tmp = new ArrayList<Integer>();
+        for (int i = 0; i < 100; i++){
+            quantity_tmp.add(i);
+        }
+        JComboBox<Integer> quantity = new JComboBox<Integer>(quantity_tmp.toArray(new Integer[quantity_tmp.size()]));
 
         // Comment field
+        JTextField comment = new JTextField();
 
         // Add in panel
-
-        // Quit action
-
-
-        /*String[] items = {"One", "Two", "Three", "Four", "Five"};
-        JComboBox<String> combo = new JComboBox<>(items);
-        JTextField field1 = new JTextField("1234.56");
-        JTextField field2 = new JTextField("9876.54"); */
         JPanel panel = new JPanel(new GridLayout(0, 1));
         panel.add(new JLabel("Year"));
         panel.add(years);
         panel.add(new JLabel("Color"));
         panel.add(colors);
+        panel.add(new JLabel("Name"));
+        panel.add(name);
+        panel.add(new JLabel("Appelation"));
+        panel.add(appelation);
+        panel.add(new JLabel("Price"));
+        panel.add(price);
+        panel.add(new JLabel("Quantity"));
+        panel.add(quantity);
+        panel.add(new JLabel("Comment"));
+        panel.add(comment);
 
+        // Quit action
 
-        /*
-        panel.add(combo);
-        panel.add(new JLabel("Field 1:"));
-        panel.add(field1);
-        panel.add(new JLabel("Field 2:"));
-        panel.add(field2);*/
         int result = JOptionPane.showConfirmDialog(null, panel, "Test",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            System.out.println(years.getSelectedItem());
-            System.out.println(colors.getSelectedItem());
-            /*System.out.println(combo.getSelectedItem()
-                    + " " + field1.getText()
-                    + " " + field2.getText());*/
+            System.out.println("New bottle");
+            try {
+                return new Bottle((int) years.getSelectedItem(), colors.getSelectedItem().toString(), name.getText(),
+                        appelation.getText(), new Double(price.getText()), (int) quantity.getSelectedItem(), comment.getText());
+            }catch (Exception e){
+                System.out.println("Error bottle format");
+                return new Bottle(0, "Black", "Château erreur", "Erroris fungulis", 666, 1, e.getMessage());
+            }
         } else {
             System.out.println("Cancelled");
+            return null;
         }
     }
 }
