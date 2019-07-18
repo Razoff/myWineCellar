@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
@@ -144,6 +146,15 @@ public class ListDisplayer {
             }
         });
 
+        // Sort behaviour
+        table.getRowSorter().addRowSorterListener(new RowSorterListener() {
+            @Override
+            public void sorterChanged(RowSorterEvent rowSorterEvent) {
+                System.out.println("Sorting");
+                //update_bottles(table);
+            }
+        });
+
         // Add button behaviour
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -209,7 +220,7 @@ public class ListDisplayer {
     private void delete_row(JTable table){
         if (lastSelectedRow != -1) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.removeRow(lastSelectedRow);
+            model.removeRow(table.convertRowIndexToModel(lastSelectedRow));
         }else{
             System.out.println("No rows selected");
         }
@@ -226,7 +237,7 @@ public class ListDisplayer {
     }
 
     // Update this.cellar_bottles with the current content of the jtable (last step before writing to cellar file)
-    private void update_bottles(JTable table){
+    private void update_bottles(JTable table){ // TODO set attribute to the table MODEL again
         TableModel dtm = table.getModel();
         int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
         Object[][] tableData = new Object[nRow][nCol];
