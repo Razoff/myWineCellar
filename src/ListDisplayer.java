@@ -38,7 +38,7 @@ public class ListDisplayer {
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(75);
         table.getColumnModel().getColumn(4).setPreferredWidth(30);
-        table.getColumnModel().getColumn(6).setPreferredWidth(20);
+        table.getColumnModel().getColumn(5).setPreferredWidth(20);
         table.getColumnModel().getColumn(6).setPreferredWidth(300);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
