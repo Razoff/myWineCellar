@@ -4,6 +4,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -31,8 +32,21 @@ public class ListDisplayer {
         JTable table = new JTable();
 
         // Set up model AKA put data into table
-        DefaultTableModel model = new DefaultTableModel(cellar_bottles, headers);
+        DefaultTableModel model = new DefaultTableModel(cellar_bottles, headers){
+            // Get type of each column for sorting via header
+            public Class getColumnClass(int column) {
+                Class returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+                return returnValue;
+            }
+        };
         table.setModel(model);
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model); // Create sorter from table model
+        table.setRowSorter(sorter);
 
         // Special renderer to see colors in column 1
         table.getColumnModel().getColumn(1).setCellRenderer(new ColorCellRenderer());
