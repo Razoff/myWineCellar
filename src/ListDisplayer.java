@@ -23,8 +23,7 @@ public class ListDisplayer {
     public void display() {
 
         final JFrame frame = new JFrame("My cellar GUI");
-        frame.setSize(500, 500);
-        frame.setVisible(true);
+        frame.setSize(1000, 1000);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         //JTable table = new JTable(cellar_bottles, headers);
@@ -165,6 +164,8 @@ public class ListDisplayer {
                 }
             }
         });
+
+        frame.setVisible(true);
 
     }
 
