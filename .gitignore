@@ -1,2 +1,4 @@
 .idea/
 cellar/
+out/
+.attach*
