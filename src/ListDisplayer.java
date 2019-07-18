@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -75,7 +76,11 @@ public class ListDisplayer {
                     savButton.setText("Save");
                 }else if (evt.getKeyCode() == KeyEvent.VK_DELETE){
                     delete_row(table);
-                    System.out.println("Delete");
+                    System.out.println("Delete key");
+                }else if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_D){
+                    add_row(table, new AddBottleForm().display());
+                    System.out.println("CTRL + D");
+                    savButton.setText("Save*");
                 }
             }
         });
@@ -85,6 +90,17 @@ public class ListDisplayer {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 lastSelectedRow = table.getSelectedRow();
                 System.out.println(lastSelectedRow);
+            }
+        });
+
+        table.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                TableCellEditor tce = table.getCellEditor();
+                if (tce != null){
+                    System.out.println("Edited");
+                    savButton.setText("Save*");
+                }
             }
         });
 
@@ -152,9 +168,11 @@ public class ListDisplayer {
     }
 
     private void add_row(JTable table, Bottle bottle){
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(bottle.arrayification());
-        table.setModel(model);
+        if(bottle != null) {
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.addRow(bottle.arrayification());
+            table.setModel(model);
+        }
     }
 
     private void update_bottles(JTable table){
