@@ -2,4 +2,4 @@
 cellar/
 out/
 .attach*
-./src/META-INF/*
+src/META-INF/
