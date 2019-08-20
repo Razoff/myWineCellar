@@ -23,7 +23,6 @@ public class ListDisplayer {
     }
 
     public void display() {
-
         // Create basic frame
         final JFrame frame = new JFrame("My cellar GUI");
         frame.setSize(1000, 1000);
@@ -202,6 +201,8 @@ public class ListDisplayer {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Stats");
+                StatsDisplayer stats = new StatsDisplayer(cellar_bottles);
+                stats.Display();
             }
         });
 
