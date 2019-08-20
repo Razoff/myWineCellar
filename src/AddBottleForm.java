@@ -1,6 +1,7 @@
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import javax.swing.*;
 
 public class AddBottleForm {
@@ -11,6 +12,7 @@ public class AddBottleForm {
         for(int year = 1900 ; year <= Calendar.getInstance().get(Calendar.YEAR); year++){
             years_tmp.add(year);
         }
+        Collections.reverse(years_tmp);
         JComboBox<Integer> years = new JComboBox<Integer>(years_tmp.toArray(new Integer[years_tmp.size()]));
 
         // Color field

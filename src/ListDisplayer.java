@@ -9,8 +9,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class ListDisplayer {
     private String[] headers;
@@ -79,6 +78,7 @@ public class ListDisplayer {
         JButton rmvButton = new JButton("Remove"); // Remove bottle to jtable
         JButton savButton = new JButton("Save"); // Backup cellar into mycellar file
         JButton relButton = new JButton("Reload"); // Load current content of cellar into Jtable
+        JButton stsButton = new JButton("Stats"); // Display stats pannel
         JButton quiButton = new JButton("Quit"); // Quit the GUI
 
         // Add buttons to panel
@@ -86,6 +86,7 @@ public class ListDisplayer {
         btns.add(rmvButton);
         btns.add(savButton);
         btns.add(relButton);
+        btns.add(stsButton);
         btns.add(quiButton);
 
         // Add elements to panel
@@ -191,9 +192,16 @@ public class ListDisplayer {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("Reload");
-                DefaultTableModel model = new DefaultTableModel(cellar_bottles, headers);
-                table.setModel(model);
+                soft_quit(frame);
                 savButton.setText("Save");
+            }
+        });
+
+        // Stats button behaviour
+        stsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Stats");
             }
         });
 
@@ -236,8 +244,14 @@ public class ListDisplayer {
         }
     }
 
+    private void soft_quit(JFrame frame){
+        frame.setVisible(false);
+        frame.dispose();
+        display();
+    }
+
     // Update this.cellar_bottles with the current content of the jtable (last step before writing to cellar file)
-    private void update_bottles(JTable table){ // TODO set attribute to the table MODEL again
+    private void update_bottles(JTable table){
         TableModel dtm = table.getModel();
         int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
         Object[][] tableData = new Object[nRow][nCol];
