@@ -4,7 +4,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 
 public class PriceCellRenderer extends DefaultTableCellRenderer {
-    private static final DecimalFormat formatter = new DecimalFormat( "#.00" );
+    private static final DecimalFormat formatter = new DecimalFormat( "0.00" );
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
