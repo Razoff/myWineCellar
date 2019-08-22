@@ -98,7 +98,7 @@ public class StatsDisplayer {
 
         // Customize chart
         color_chart.getStyler().setSeriesColors(sliceColors);
-        //color_chart.getStyler().setLegendVisible(false);
+        color_chart.getStyler().setLegendVisible(false);
         color_chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
         color_chart.getStyler().setDrawAllAnnotations(true);
         color_chart.getStyler().setAnnotationDistance(1.15);
@@ -148,9 +148,20 @@ public class StatsDisplayer {
     private void create_appelation_chart(){
         PieChart appelation_chart = new PieChartBuilder().width(800).height(600).title("Appelation chart").build();
 
+        // Custom chart
+        //appelation_chart.getStyler().setLegendVisible(false);
+        //appelation_chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
+        //appelation_chart.getStyler().setDrawAllAnnotations(true);
+        //appelation_chart.getStyler().setAnnotationDistance(1.15);
+        //appelation_chart.getStyler().setPlotContentSize(.7);
+        //appelation_chart.getStyler().setStartAngleInDegrees(90);
+
+        // Add serie
         appelation_map.forEach((k,v) -> appelation_chart.addSeries(k,v));
 
+        // Strign construction
         final String appelation_string = appelation_map.entrySet().stream().map(Object::toString).collect(Collectors.joining("  ,   "));
+        // TODO Reduce serie add and string in one for comprehension
 
         // Display
         JFrame frame = new JFrame("Color pie");
