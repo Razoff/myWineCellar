@@ -2,6 +2,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Currency;
 import javax.swing.*;
 
 public class AddBottleForm {
@@ -9,6 +10,8 @@ public class AddBottleForm {
 
         // Year field
         ArrayList<Integer> years_tmp = new ArrayList<Integer>();
+        years_tmp.add(0);
+
         for(int year = 1900 ; year <= Calendar.getInstance().get(Calendar.YEAR); year++){
             years_tmp.add(year);
         }
@@ -26,6 +29,10 @@ public class AddBottleForm {
 
         // Price field
         JTextField price = new JTextField();
+        price.setText("0.0");
+
+        // Currency field
+        JComboBox<String> currencies = new JComboBox<>(new String[]{"CHF", "EUR", "DOL"});
 
         // Quantity field
         ArrayList<Integer> quantity_tmp = new ArrayList<Integer>();
@@ -49,6 +56,8 @@ public class AddBottleForm {
         panel.add(appelation);
         panel.add(new JLabel("Price"));
         panel.add(price);
+        panel.add(new JLabel("Currency"));
+        panel.add(currencies);
         panel.add(new JLabel("Quantity"));
         panel.add(quantity);
         panel.add(new JLabel("Comment"));
@@ -62,10 +71,10 @@ public class AddBottleForm {
             System.out.println("New bottle");
             try {
                 return new Bottle((int) years.getSelectedItem(), ColorConverter.wineTypeToColor(colors.getSelectedItem().toString()), name.getText(),
-                        appelation.getText(), new Double(price.getText()), (int) quantity.getSelectedItem(), comment.getText());
+                        appelation.getText(), new Double(price.getText()), currencies.getSelectedItem().toString() ,(int) quantity.getSelectedItem(), comment.getText());
             }catch (Exception e){
                 System.out.println("Error bottle format");
-                return new Bottle(0, "Black", "Château erreur", "Erroris fungulis", 666, 1, e.getMessage());
+                return new Bottle(0, "Black", "Château erreur", "Erroris fungulis", 666, "ZZZ" ,1, e.getMessage());
             }
         } else {
             System.out.println("Cancelled");

@@ -3,10 +3,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -25,7 +22,7 @@ public class ListDisplayer {
     public void display() {
         // Create basic frame
         final JFrame frame = new JFrame("My cellar GUI");
-        frame.setSize(1000, 1000);
+        frame.setSize(1200, 1200);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // See listener later for closing actions
 
         // Create table
@@ -54,11 +51,12 @@ public class ListDisplayer {
         // Setup default spacing
         table.getColumnModel().getColumn(0).setPreferredWidth(20);
         table.getColumnModel().getColumn(1).setPreferredWidth(20);
-        table.getColumnModel().getColumn(2).setPreferredWidth(100);
-        table.getColumnModel().getColumn(3).setPreferredWidth(75);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
         table.getColumnModel().getColumn(4).setPreferredWidth(30);
         table.getColumnModel().getColumn(5).setPreferredWidth(20);
-        table.getColumnModel().getColumn(6).setPreferredWidth(300);
+        table.getColumnModel().getColumn(6).setPreferredWidth(20);
+        table.getColumnModel().getColumn(7).setPreferredWidth(400);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
         // Add scrolling
@@ -68,6 +66,18 @@ public class ListDisplayer {
 
         // Special renderer for header
         table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+
+        // Set bigger font and box size
+        table.setFont(new Font("Verdana",Font.PLAIN,20));
+        table.setRowHeight(25);
+
+        // Set price top the left + 2 decimals
+        table.getColumnModel().getColumn(4).setCellRenderer(new PriceCellRenderer());
+
+        // Set quantity to left
+        DefaultTableCellRenderer custom_quantity = new DefaultTableCellRenderer();
+        custom_quantity.setHorizontalAlignment(JLabel.LEFT);
+        table.getColumnModel().getColumn(6).setCellRenderer(custom_quantity);
 
         // Panel for the buttons
         JPanel btns = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
