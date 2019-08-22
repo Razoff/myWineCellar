@@ -74,10 +74,11 @@ public class ListDisplayer {
         // Set price top the left + 2 decimals
         table.getColumnModel().getColumn(4).setCellRenderer(new PriceCellRenderer());
 
-        // Set quantity to left
+        // Set quantity to left and move it
         DefaultTableCellRenderer custom_quantity = new DefaultTableCellRenderer();
         custom_quantity.setHorizontalAlignment(JLabel.LEFT);
         table.getColumnModel().getColumn(6).setCellRenderer(custom_quantity);
+        table.moveColumn(6,4);
 
         // Panel for the buttons
         JPanel btns = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
