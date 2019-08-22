@@ -21,7 +21,7 @@ public class StatsDisplayer {
     private final int color_id = 1;
     private final int appelation_id = 3;
     private final int price_id = 4;
-    private final int quantity_id = 5; // Position of quantity field
+    private final int quantity_id = 6; // Position of quantity field
 
     // Cellar
     private Object[][] cellar_bottles;
@@ -98,11 +98,13 @@ public class StatsDisplayer {
 
         // Customize chart
         color_chart.getStyler().setSeriesColors(sliceColors);
-        color_chart.getStyler().setLegendVisible(false);
+        //color_chart.getStyler().setLegendVisible(false);
         color_chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
+        color_chart.getStyler().setDrawAllAnnotations(true);
         color_chart.getStyler().setAnnotationDistance(1.15);
         color_chart.getStyler().setPlotContentSize(.7);
         color_chart.getStyler().setStartAngleInDegrees(90);
+
 
         // Series
         color_chart.addSeries("Red wine", color_map.get("Red"));
@@ -146,13 +148,6 @@ public class StatsDisplayer {
     private void create_appelation_chart(){
         PieChart appelation_chart = new PieChartBuilder().width(800).height(600).title("Appelation chart").build();
 
-        // Customize chart
-        appelation_chart.getStyler().setLegendVisible(false);
-        appelation_chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
-        appelation_chart.getStyler().setAnnotationDistance(1.15);
-        appelation_chart.getStyler().setPlotContentSize(.7);
-        appelation_chart.getStyler().setStartAngleInDegrees(90);
-
         appelation_map.forEach((k,v) -> appelation_chart.addSeries(k,v));
 
         final String appelation_string = appelation_map.entrySet().stream().map(Object::toString).collect(Collectors.joining("  ,   "));
@@ -186,6 +181,5 @@ public class StatsDisplayer {
         ret += "Total value of the cellar : " + total_price + "\n";
 
         return ret;
-
     }
 }
